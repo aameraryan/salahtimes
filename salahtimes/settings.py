@@ -71,7 +71,7 @@ if os.getenv('GAE_APPLICATION', None):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'HOST': 'salahtimes-265217:asia-south1:salahtimes',
+            'HOST': '/cloudsql/salahtimes-265217:asia-south1:salahtimes',
             'USER': 'aamer',
             'PASSWORD': 'Aamer@Salahtimes#',
             'NAME': 'salahtimes_db',
