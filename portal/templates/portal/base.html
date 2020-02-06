@@ -6,9 +6,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <meta name="theme-color" content="#4CAF50"/>
     <title>Salah Times</title>
     <!-- Favicon-->
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="{% static "images/m.ico" %}" type="image/x-icon">
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
@@ -26,7 +27,7 @@
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="{% static "css/themes/all-themes.css" %}" rel="stylesheet" />
 
-    {% block custom_links %}n
+    {% block custom_links %}
     {% endblock %}
 
 </head>
@@ -99,23 +100,11 @@
 
         $(".randomColor").each(function (i) {
             i += 1;
-            if (i%6==1){
-                $(this).addClass("panel-col-teal");
-            }
-            else if (i%6==2){
-                $(this).addClass("panel-col-indigo");
-            }
-            else if (i%6==3){
+            if (i%2==1){
                 $(this).addClass("panel-col-green");
             }
-            else if (i%6==4){
-                $(this).addClass("panel-col-blue");
-            }
-            else if (i%6==5){
-                $(this).addClass("panel-col-pink");
-            }
-            else if (i%6==0){
-                $(this).addClass("panel-col-blue-grey");
+            else if (i%2==0){
+                $(this).addClass("panel-col-light-green");
             }
         })
     </script>

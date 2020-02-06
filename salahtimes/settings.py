@@ -4,7 +4,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = '^=w(sre0bol)ygy-f64b6c%!^)!6(yxv184s4#gb6#5n*kz57^'
 
-DEBUG = False
 
 ALLOWED_HOSTS = ["*", ]
 
@@ -55,40 +54,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'salahtimes.wsgi.application'
-#
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-#
-
-import pymysql  # noqa: 402
-pymysql.install_as_MySQLdb()
-
-if os.getenv('GAE_APPLICATION', None):
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'HOST': '/cloudsql/salahtimes-265217:asia-south1:salahtimes',
-            'USER': 'aamer',
-            'PASSWORD': 'Aamer@Salahtimes#',
-            'NAME': 'salahtimes_db',
-        }
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'HOST': '127.0.0.1',
-            'PORT': '3306',
-            'NAME': 'salahtimes_db',
-            'USER': 'aamer',
-            'PASSWORD': 'Aamer@Salahtimes#',
-        }
-    }
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -119,14 +84,46 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 STATIC_ROOT = 'static'
-
-
-#   CUSTOM SETTINGS
-
-# AUTH_USER_MODEL = "accounts.User"
-
 SITE_NAME = "Salah Times"
-
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
+
+#   PRODUCTION CHANGES
+
+
 SECURE_SSL_REDIRECT = True
+DEBUG = False
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
+
+import pymysql  # noqa: 402
+pymysql.install_as_MySQLdb()
+
+if os.getenv('GAE_APPLICATION', None):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'HOST': '/cloudsql/salahtimes-265217:asia-south1:salahtimes',
+            'USER': 'aamer',
+            'PASSWORD': 'Aamer@Salahtimes#',
+            'NAME': 'salahtimes_db',
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'HOST': '127.0.0.1',
+            'PORT': '3306',
+            'NAME': 'salahtimes_db',
+            'USER': 'aamer',
+            'PASSWORD': 'Aamer@Salahtimes#',
+        }
+    }
+
