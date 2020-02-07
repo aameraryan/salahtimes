@@ -29,3 +29,8 @@ class MasjidUpdateForm(forms.ModelForm):
         model = Masjid
         fields = ("name", "area", "fajar", "zuhar", "asar", "maghrib", "isha", "juma")
         non_editable_fields = ("name", "area")
+
+    def __init__(self, *args, **kwargs): 
+        super().__init__(*args, **kwargs)
+        self.fields['name'].disabled = True
+        self.fields['area'].disabled = True
