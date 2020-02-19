@@ -8,6 +8,10 @@ from localities.models import City
 from django.contrib import messages
 
 
+def test(request):
+    return render(request, "portal/test.html", {"masajid": Masjid.objects.all()})
+
+
 class HomeView(TemplateView):
 
     template_name = "portal/home.html"

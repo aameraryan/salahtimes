@@ -2,6 +2,7 @@ import datetime
 import time
 
 from django.db import models
+from django.db.models.signals import post_save
 from django.urls import reverse_lazy
 
 from localities.models import Area
@@ -25,30 +26,6 @@ class Masjid(models.Model):
     def __str__(self):
         return self.name
 
-    # def save(self, force_insert=False, force_update=False, using=None,
-    #          update_fields=None):
-    #     if self.id:
-    #         print("has id")
-    #         if self.fajar > datetime.time(12, 0, 0):
-    #             self.fajar = (datetime.datetime.combine(datetime.date(1, 1, 1), self.fajar) -
-    #                           datetime.timedelta(hours=12)).time()
-    #         if self.zuhar < datetime.time(12, 0, 0):
-    #             self.zuhar = (datetime.datetime.combine(datetime.date(1, 1, 1), self.zuhar) +
-    #                           datetime.timedelta(hours=12)).time()
-    #         if self.asar < datetime.time(12, 0, 0):
-    #             self.asar = (datetime.datetime.combine(datetime.date(1, 1, 1), self.asar) +
-    #                           datetime.timedelta(hours=12)).time()
-    #         if self.maghrib < datetime.time(12, 0, 0):
-    #             self.maghrib = (datetime.datetime.combine(datetime.date(1, 1, 1), self.maghrib) +
-    #                           datetime.timedelta(hours=12)).time()
-    #         if self.isha < datetime.time(12, 0, 0):
-    #             self.isha = (datetime.datetime.combine(datetime.date(1, 1, 1), self.isha) +
-    #                           datetime.timedelta(hours=12)).time()
-    #         if self.juma < datetime.time(12, 0, 0):
-    #             self.juma = (datetime.datetime.combine(datetime.date(1, 1, 1), self.juma) +
-    #                           datetime.timedelta(hours=12)).time()
-    #         super().save()
-
     def get_address_display(self):
         return "{}".format(self.address)
 
@@ -59,3 +36,44 @@ class Masjid(models.Model):
     @property
     def get_update_url(self):
         return reverse_lazy("masjids:update", kwargs={"id": self.id})
+
+
+def validate_times(instance, sender, *args, **kwargs):
+    am_times = ['fajar']
+    pm_times = ['zuhar', 'asar', 'maghrib', 'isha', "juma"]
+    is_changed = False
+    for namaz in am_times:
+        namaz_attr = getattr(instance, namaz)
+        if namaz_attr > datetime.time(12, 0, 0):
+            new_time = (datetime.datetime.combine(datetime.date(1, 1, 1), namaz_attr) - datetime.timedelta(hours=12)).time()
+            setattr(instance, namaz, new_time)
+            is_changed = True
+    for namaz in pm_times:
+        namaz_attr = getattr(instance, namaz)
+        if namaz_attr < datetime.time(12, 0, 0):
+            new_time = (datetime.datetime.combine(datetime.date(1, 1, 1), namaz_attr) + datetime.timedelta(hours=12)).time()
+            setattr(instance, namaz, new_time)
+            is_changed = True
+    if is_changed:
+        instance.save()
+
+
+post_save.connect(validate_times, sender=Masjid)
+
+
+# if instance.zuhar < datetime.time(12, 0, 0):
+#     instance.zuhar = (datetime.datetime.combine(datetime.date(1, 1, 1), instance.zuhar) +
+#                       datetime.timedelta(hours=12)).time()
+# if instance.asar < datetime.time(12, 0, 0):
+#     instance.asar = (datetime.datetime.combine(datetime.date(1, 1, 1), instance.asar) +
+#                      datetime.timedelta(hours=12)).time()
+# if instance.maghrib < datetime.time(12, 0, 0):
+#     instance.maghrib = (datetime.datetime.combine(datetime.date(1, 1, 1), instance.maghrib) +
+#                         datetime.timedelta(hours=12)).time()
+# if instance.isha < datetime.time(12, 0, 0):
+#     instance.isha = (datetime.datetime.combine(datetime.date(1, 1, 1), instance.isha) +
+#                      datetime.timedelta(hours=12)).time()
+# if instance.juma < datetime.time(12, 0, 0):
+#     instance.juma = (datetime.datetime.combine(datetime.date(1, 1, 1), instance.juma) +
+#                      datetime.timedelta(hours=12)).time()
+

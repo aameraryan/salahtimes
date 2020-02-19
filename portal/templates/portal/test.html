@@ -1,78 +1,48 @@
 {% extends "portal/base.html" %}
-{% block full_title %}Salah Times{% endblock %}
+{% block full_title %}All Areas{% endblock %}
 
 {% block custom_links %}
 
     <link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/rowreorder/1.2.6/css/rowReorder.dataTables.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
 
 {% endblock %}
 
-
 {% block content %}
+
     <section class="content">
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+{#                    <div class="card">#}
+{#                        <div class="header">#}
 
-        <marquee class="text-success" scrollamount="5">Version 2.0 | Now you can directly update namaz times. Please update times very carefully!</marquee>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <select id="sort_by_namaz" class="form-control show-tick">
+                                        <option value="">Sort by Namaz</option>
+                                            <option value="1">Fajar</option>
+                                            <option value="2">Zuhar</option>
+                                            <option value="3">Asar</option>
+                                            <option value="4">Maghrib</option>
+                                            <option value="5">Isha</option>
+                                            <option value="6">Juma</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-6">
+                                    <select id="sort_order" class="form-control show-tick">
+                                        <option value="asc">Earliest</option>
+                                        <option value="desc">Last</option>
+                                    </select>
+                                </div>
+                            </div>
 
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
+{#                        </div>#}
 
-        <div class="container-fluidl">
-            <div class="block-header" style="margin-left: 0">
-                <h2><b>Showing <span id="masajid_count">{{ masajid.count }}</span> Masajid</b></h2>
-            </div>
-            <div style="background-color: white;padding: 15px 20px 10px 20px;">
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        <i class="material-icons amt_icon">search</i>
-                    </span>
-                    <div class="form-line">
-                        <input type="text" id="query" class="form-control" placeholder="search by name or address">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6 col-xs-6 col-md-6 col-lg-6">
-                        <select id="sort_by_namaz" class="form-control show-tick z-depth-0">
-                            <option value="">By Namaz</option>
-                                <option value="1">Fajar</option>
-                                <option value="2">Zuhar</option>
-                                <option value="3">Asar</option>
-                                <option value="4">Maghrib</option>
-                                <option value="5">Isha</option>
-                                <option value="6">Juma</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-6 col-xs-6 col-md-6 col-lg-6">
-                        <select id="sort_order" class="form-control show-tick">
-                            <option value="">Sort Order</option>
-                            <option value="asc">Earliest</option>
-                            <option value="desc">Last</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <br>
 
-            <br>
-            <a href="{% url "masjids:create" %}">
-                <button type="button" class="btn btn-success waves-effect">
-                    <i class="material-icons">add</i>
-                    <span>ADD NEW MASJID</span>
-                </button>
-            </a>            <br><br>
-            <div class="clearfix"></div>
-            <!-- Basic Example -->
-            <div class="row clearfix container-fluid">
-{#            <div style="background-color: #4caf50;padding: 10px">#}
-                <table id="namaz_table" style="width: 100%;background-color: white" class="table  display nowrap table-bordered table-striped table-hover js-basic-example dataTable">
+                        <div class="body">
+                                <table id="namaz_table" style="width: 100%" class="table display nowrap table-bordered table-striped table-hover js-basic-example dataTable">
                                     <thead>
                                         <tr>
                                             <th>Name</th>
@@ -113,13 +83,14 @@
                 {% endfor %}
             </tbody>
                                 </table>
-
-{#            </div>#}
+                        </div>
+{#                    </div>#}
+                </div>
             </div>
-            <!-- #END# Basic Example -->
-        </div>
     </section>
+
 {% endblock %}
+
 
 {% block custom_script %}
 
@@ -133,17 +104,12 @@
             let table = $('#namaz_table').DataTable( {
                 responsive: true,
                 paging: false,
-                {#searching: false,#}
+                searching: false,
                 columnDefs: [
                     { responsivePriority: 1, targets: 0 },
                     { responsivePriority: 2, targets: 1 }
                 ]
             } );
-            $('#query').on( 'keyup', function () {
-                table.search( this.value ).draw();
-                $("#masajid_count").text(table.page.info().recordsDisplay);
-            } );
-                $("#namaz_table_filter").hide();
 
             function sort_table(){
                 let sort_col = parseInt($("#sort_by_namaz").val());
@@ -152,7 +118,7 @@
                     responsive: true,
                     destroy: true,
                     paging: false,
-                    {#searching: false,#}
+                    searching: false,
                     order: [sort_col, sort_order],
                     columnDefs: [
                         { responsivePriority: 1, targets: 0 },
@@ -164,11 +130,9 @@
                 });
             }
             $("#sort_by_namaz, #sort_order").on("change", function () {
-                if ($("#sort_by_namaz").val() !== "") {
-                    sort_table();
-                    $("#namaz_table_filter").hide();
-                }
+                sort_table();
             })
         } );
     </script>
 {% endblock %}
+
