@@ -9,12 +9,19 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
 
 {% endblock %}
+{% block custom_head %}
+    <style>
+        .dropdown-toggle{
+            box-shadow: none!important;
+        }
 
+    </style>
+{% endblock %}
 
 {% block content %}
     <section class="content">
 
-        <marquee class="text-success" scrollamount="5">Version 2.0 | Now you can directly update namaz times. Please update times very carefully!</marquee>
+        <marquee class="text-success" scrollamount="5">Version 3.0 | Now you can sort masajid names by Namaz.</marquee>
 
         {% if messages %}
             {% for message in messages %}
@@ -70,47 +77,47 @@
             <!-- Basic Example -->
             <div class="row clearfix container-fluid">
 {#            <div style="background-color: #4caf50;padding: 10px">#}
-                <table id="namaz_table" style="width: 100%;background-color: white" class="table  display nowrap table-bordered table-striped table-hover js-basic-example dataTable">
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Fajar</th>
-                                            <th>Zuhar</th>
-                                            <th>Asar</th>
-                                            <th>Maghrib</th>
-                                            <th>Isha</th>
-                                            <th>Juma</th>
-                                            <th>Address</th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Fajar</th>
-                                            <th>Zuhar</th>
-                                            <th>Asar</th>
-                                            <th>Maghrib</th>
-                                            <th>Isha</th>
-                                            <th>Juma</th>
-                                            <th>Address</th>
-                                        </tr>
-                                    </tfoot>
-                                    </tfoot>
-                                    <tbody>
-                {% for masjid in masajid %}
-                    <tr>
-                        <td>{{ masjid.name }}</td>
-                        <td>{{ masjid.fajar }}</td>
-                        <td>{{ masjid.zuhar }}</td>
-                        <td>{{ masjid.asar }}</td>
-                        <td>{{ masjid.maghrib }}</td>
-                        <td>{{ masjid.isha }}</td>
-                        <td>{{ masjid.juma }}</td>
-                        <td>{{ masjid.address }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-                                </table>
+                <table id="namaz_table" style="width: 100%;background-color: white" class="table display nowrap table-bordered table-striped table-hover js-basic-example dataTable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Fajar</th>
+                            <th>Zuhar</th>
+                            <th>Asar</th>
+                            <th>Maghrib</th>
+                            <th>Isha</th>
+                            <th>Juma</th>
+                            <th>Address</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Name</th>
+                            <th>Fajar</th>
+                            <th>Zuhar</th>
+                            <th>Asar</th>
+                            <th>Maghrib</th>
+                            <th>Isha</th>
+                            <th>Juma</th>
+                            <th>Address</th>
+                        </tr>
+                    </tfoot>
+                    </tfoot>
+                    <tbody>
+                        {% for masjid in masajid %}
+                            <tr>
+                                <td>{{ masjid.name }}</td>
+                                <td>{{ masjid.fajar|date:"g:i A" }}</td>
+                                <td>{{ masjid.zuhar|date:"g:i A" }}</td>
+                                <td>{{ masjid.asar|date:"g:i A" }}</td>
+                                <td>{{ masjid.maghrib|date:"g:i A" }}</td>
+                                <td>{{ masjid.isha|date:"g:i A" }}</td>
+                                <td>{{ masjid.juma|date:"g:i A" }}</td>
+                                <td>{{ masjid.address }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
 
 {#            </div>#}
             </div>
@@ -166,7 +173,9 @@
                     sort_table();
                     $("#namaz_table_filter").hide();
                 }
-            })
+            });
+            sort_table();
+            $("#namaz_table_filter").hide();
         } );
     </script>
 {% endblock %}

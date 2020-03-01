@@ -4,6 +4,9 @@ from .models import Masjid
 
 class MasjidCreateForm(forms.ModelForm):
 
+    your_contact = forms.CharField(widget=forms.TextInput(
+        attrs={"minlength": 10, "maxlength": 10, "pattern": "\d", "placeholder": "9876543210"}))
+
     fajar = forms.TimeField(input_formats=["%I:%M %p"])
     zuhar = forms.TimeField(input_formats=["%I:%M %p"])
     asar = forms.TimeField(input_formats=["%I:%M %p"])
