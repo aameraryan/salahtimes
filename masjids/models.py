@@ -55,8 +55,13 @@ class Masjid(models.Model):
         return text
 
     @property
-    def get_admins_count(self):
+    def get_staff_count(self):
         return self.masjidstaff_set.all().count()
+
+    def get_staff_count_admin(self):
+        return self.get_staff_count
+
+    get_staff_count_admin.short_description = "No. of Admins"
 
     @property
     def get_admin_url(self):
@@ -76,6 +81,11 @@ class Masjid(models.Model):
         else:
             text = "{} days ago".format(last_updated)
         return text
+
+    def get_last_updated_text_admin(self):
+        return self.get_last_updated_text
+
+    get_last_updated_text_admin.short_description = "Last Updated"
 
     @property
     def get_email_message_details(self):

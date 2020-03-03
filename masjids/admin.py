@@ -8,6 +8,7 @@ class MasjidStaffInline(admin.TabularInline):
 
 
 class MasjidAdmin(admin.ModelAdmin):
+    list_display = ("name", "get_last_updated_text_admin", "get_staff_count", "fajar", "zuhar", "asar", "maghrib", "isha", "juma")
     inlines = [MasjidStaffInline, ]
 
 
@@ -15,7 +16,7 @@ admin.site.register(Masjid, MasjidAdmin)
 
 
 class MasjidStaffAdmin(admin.ModelAdmin):
-    list_display = ("masjid", "name", "phone", "created_on", "get_created_on")
+    list_display = ("masjid", "name", "phone", "action_count", "get_created_on")
     readonly_fields = ("created_on", )
 
 
