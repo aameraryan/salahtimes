@@ -68,10 +68,10 @@ class EmailThread(threading.Thread):
     def run(self):
         if self.action == 1:
             subject = "Salahtimes : New Masjid Created"
-            heading = "New Masjid has been created.\nPlease check it.\nPerson Contact : {}\n\n".format(self.staff.phone)
+            heading = "New Masjid has been created.\nPlease check it.\nPerson Contact : {}\n".format(self.staff.phone)
         else:
             subject = "Salahtimes : \"{}\" Masjid Updated".format(self.masjid.name)
-            heading = "New Masjid has been updated.\nPlease check it.\nPerson Contact : {}\n\n".format(self.staff.phone)
+            heading = "New Masjid has been updated.\nPlease check it.\nPerson Contact : {}\n".format(self.staff.phone)
         message = heading + self.masjid.get_email_message_details
         from_email = settings.EMAIL_HOST_USER
         recipient_list = settings.ADMIN_EMAILS

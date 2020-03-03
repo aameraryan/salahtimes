@@ -93,7 +93,7 @@ class Masjid(models.Model):
             Juma : {7}, 
 
             url : {8}, 
-                  """.format(self.name, self.address, self.fajar, self.zuhar, self.asar,
+                  """.format(self.name, self.address, self.fajar.strftime("%g:%h %A"), self.zuhar, self.asar,
                              self.maghrib, self.isha, self.juma, self.get_admin_url)
         return message
 
