@@ -1,9 +1,12 @@
 import datetime
 import time
 
+from django.conf import settings
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models.signals import post_save
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
+from django.utils import timezone
 
 from localities.models import Area
 
@@ -24,7 +27,7 @@ class Masjid(models.Model):
     juma = models.TimeField()
 
     created_on = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(auto_now=True)
+    updated_on = models.DateTimeField(verbose_name="Last Updated On", auto_now=True)
 
     def __str__(self):
         return self.name
@@ -55,6 +58,45 @@ class Masjid(models.Model):
     def get_admins_count(self):
         return self.masjidstaff_set.all().count()
 
+    @property
+    def get_admin_url(self):
+        content_type = ContentType.objects.get_for_model(self.__class__)
+        return settings.SITE_DOMAIN + str(
+            reverse("admin:%s_%s_change" % (content_type.app_label, content_type.model), args=(self.id,)))
+
+    @property
+    def get_last_updated_text(self):
+        last_updated = (timezone.now()-self.updated_on).days
+        if last_updated == 0:
+            text = "Today"
+        elif last_updated == 1:
+            text = "Yesterday"
+        elif last_updated >= 30:
+            text = "{} months ago".format(last_updated//30)
+        else:
+            text = "{} days ago".format(last_updated)
+        return text
+
+    @property
+    def get_email_message_details(self):
+        message = """
+
+        Masjid Details : 
+
+            Name : {0},
+            Address : {1},
+            Fajar : {2},
+            Zuhar : {3},
+            Asar : {4},
+            Maghrib : {5}, 
+            Isha : {6}, 
+            Juma : {7}, 
+
+            url : {8}, 
+                  """.format(self.name, self.address, self.fajar, self.zuhar, self.asar,
+                             self.maghrib, self.isha, self.juma, self.get_admin_url)
+        return message
+
 
 def validate_times(instance, sender, *args, **kwargs):
     am_times = ['fajar']
@@ -84,6 +126,7 @@ class MasjidStaff(models.Model):
     name = models.CharField(max_length=128, default="unknown")
     masjid = models.ForeignKey(Masjid, on_delete=models.CASCADE)
     phone = models.CharField(max_length=13)
+    action_count = models.PositiveSmallIntegerField(verbose_name="Actions till now", default=1)
     created_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

@@ -8,8 +8,13 @@
   font-weight: bold;
   font-size: 24px!important;
 }
+.amt_icon_success{
+  color: #3c763d!important;
+}
+
 input,textarea,select{
   padding-left: 10px!important;
+  color: #3c763d!important;
 }
 
 /* Navbar ====================================== */

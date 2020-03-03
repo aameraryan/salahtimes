@@ -39,15 +39,15 @@
             <div style="background-color: white;padding: 15px 20px 10px 20px;">
                 <div class="input-group">
                     <span class="input-group-addon">
-                        <i class="material-icons amt_icon">search</i>
+                        <i class="material-icons amt_icon amt_icon_success">search</i>
                     </span>
                     <div class="form-line">
-                        <input type="text" id="query" class="form-control" placeholder="search by name or address">
+                        <input type="text" id="query" class="form-control input-field" placeholder="search by name or address">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-6 col-xs-6 col-md-6 col-lg-6">
-                        <select id="sort_by_namaz" class="form-control show-tick z-depth-0">
+                        <select id="sort_by_namaz" class="form-control show-tick z-depth-0" style="color: green!important;">
                                 <option value="1">Fajar</option>
                                 <option value="2">Zuhar</option>
                                 <option value="3">Asar</option>
@@ -88,6 +88,8 @@
                             <th>Isha</th>
                             <th>Juma</th>
                             <th>Address</th>
+                            <th>Last Updated</th>
+                            <th>Change</th>
                         </tr>
                     </thead>
                     <tfoot>
@@ -100,6 +102,8 @@
                             <th>Isha</th>
                             <th>Juma</th>
                             <th>Address</th>
+                            <th>Last Updated</th>
+                            <th>Change</th>
                         </tr>
                     </tfoot>
                     </tfoot>
@@ -114,6 +118,15 @@
                                 <td>{{ masjid.isha|date:"g:i A" }}</td>
                                 <td>{{ masjid.juma|date:"g:i A" }}</td>
                                 <td>{{ masjid.address }}</td>
+                                <td>{{ masjid.get_last_updated_text }}</td>
+                                <td>
+                                    <a href="{{ masjid.get_update_url }}">
+                                        <button type="button" class="btn btn-success waves-effect btn-sm">
+                                            <i class="material-icons">edit</i>
+                                            <span>change</span>
+                                        </button>
+                                    </a>
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -135,20 +148,11 @@
 
     <script>
         $(document).ready(function() {
-            let table = $('#namaz_table').DataTable( {
-                responsive: true,
-                paging: false,
-                {#searching: false,#}
-                columnDefs: [
-                    { responsivePriority: 1, targets: 0 },
-                    { responsivePriority: 2, targets: 1 }
-                ]
-            } );
+
             $('#query').on( 'keyup', function () {
                 table.search( this.value ).draw();
                 $("#masajid_count").text(table.page.info().recordsDisplay);
             } );
-                $("#namaz_table_filter").hide();
 
             function sort_table(){
                 let sort_col = parseInt($("#sort_by_namaz").val());
@@ -165,17 +169,18 @@
                         { responsivePriority: 10001, targets: 1 },
                         { responsivePriority: 10001, targets: 2 },
                         { responsivePriority: 10001, targets: 3 },
+                        { responsivePriority: 10001, targets: -3 },
+                        { responsivePriority: 10001, targets: -4 },
                     ]
                 });
+                $("#namaz_table_filter").hide();
             }
             $("#sort_by_namaz, #sort_order").on("change", function () {
                 if ($("#sort_by_namaz").val() !== "") {
                     sort_table();
-                    $("#namaz_table_filter").hide();
                 }
             });
             sort_table();
-            $("#namaz_table_filter").hide();
         } );
     </script>
 {% endblock %}
