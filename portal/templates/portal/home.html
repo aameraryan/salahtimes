@@ -75,35 +75,36 @@
             </a>            <br><br>
             <div class="clearfix"></div>
             <!-- Basic Example -->
-            <div class="row clearfix container-fluid">
+            <div class="row clearfix container-fluid main_table">
 {#            <div style="background-color: #4caf50;padding: 10px">#}
+                <h4 id="loading_text" style="display: none">Loading ...</h4>
                 <table id="namaz_table" style="width: 100%;background-color: white" class="table display nowrap table-bordered table-stridped table-hover">
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Fajar</th>
-                            <th>Zuhar</th>
-                            <th>Asar</th>
-                            <th>Maghrib</th>
-                            <th>Isha</th>
-                            <th>Juma</th>
-                            <th>Address</th>
-                            <th>Last Updated</th>
-                            <th>Change</th>
+                            <th class="all" >Name</th>
+                            <th class="all">Fajar</th>
+                            <th class="none">Zuhar</th>
+                            <th class="none">Asar</th>
+                            <th class="none">Maghrib</th>
+                            <th class="none">Isha</th>
+                            <th class="none">Juma</th>
+                            <th class="none">Address</th>
+                            <th class="none">Last Updated</th>
+                            <th class="none">Change</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
-                            <th>Name</th>
-                            <th>Fajar</th>
-                            <th>Zuhar</th>
-                            <th>Asar</th>
-                            <th>Maghrib</th>
-                            <th>Isha</th>
-                            <th>Juma</th>
-                            <th>Address</th>
-                            <th>Last Updated</th>
-                            <th>Change</th>
+                            <th class="all">Name</th>
+                            <th class="none">Fajar</th>
+                            <th class="none">Zuhar</th>
+                            <th class="none">Asar</th>
+                            <th class="none">Maghrib</th>
+                            <th class="none">Isha</th>
+                            <th class="none">Juma</th>
+                            <th class="none">Address</th>
+                            <th class="none">Last Updated</th>
+                            <th class="none">Change</th>
                         </tr>
                     </tfoot>
                     </tfoot>
@@ -157,7 +158,6 @@
             } );
 
             function sort_table(){
-                pre_loader.show();
                 let sort_col = parseInt($("#sort_by_namaz").val());
                 let sort_order = $("#sort_order").val();
                 table = $("#namaz_table").DataTable({
@@ -168,20 +168,25 @@
                     order: [sort_col, sort_order],
                     columnDefs: [
                         { responsivePriority: 1, targets: 0 },
-                        { responsivePriority: 2, targets: sort_col },
+                        { responsivePriority: 1, targets: sort_col },
                         { responsivePriority: 10001, targets: 1 },
                         { responsivePriority: 10001, targets: 2 },
                         { responsivePriority: 10001, targets: 3 },
-                        { responsivePriority: 10001, targets: -3 },
-                        { responsivePriority: 10001, targets: -4 },
-                    ]
+                        { responsivePriority: 10001, targets: 4 },
+                        { responsivePriority: 10001, targets: 5 },
+                        { responsivePriority: 10001, targets: 6 },
+                        { responsivePriority: 10001, targets: 7 },
+                        { responsivePriority: 10001, targets: 8 },
+                        { responsivePriority: 10001, targets: 9 },
+                    ],
                 });
                 $("#namaz_table_filter").hide();
-                pre_loader.hide();
             }
             $("#sort_by_namaz, #sort_order").on("change", function () {
                 if ($("#sort_by_namaz").val() !== "") {
+                    $('#loading_text').show();
                     sort_table();
+                    $('#loading_text').hide();
                 }
             });
             sort_table();

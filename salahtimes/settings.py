@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'localities',
     'masjids',
     'suggestions',
+    'import_export',
 
     'crispy_forms',
     'widget_tweaks',
@@ -93,37 +94,37 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 SECURE_SSL_REDIRECT = False
 DEBUG = True
 
-# import pymysql  # noqa: 402
-# pymysql.install_as_MySQLdb()
-#
-# if os.getenv('GAE_APPLICATION', None):
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.mysql',
-#             'HOST': '/cloudsql/salahtimes-265217:asia-south1:salahtimes-v3',
-#             'USER': 'aamer',
-#             'PASSWORD': 'Aamer@Salahtimes#',
-#             'NAME': 'salahtimes_db',
-#         }
-#     }
-# else:
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.mysql',
-#             'HOST': '127.0.0.1',
-#             'PORT': '3306',
-#             'NAME': 'salahtimes_db',
-#             'USER': 'aamer',
-#             'PASSWORD': 'Aamer@Salahtimes#',
-#         }
-#     }
+import pymysql  # noqa: 402
+pymysql.install_as_MySQLdb()
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'db.sqlite3',
+if os.getenv('GAE_APPLICATION', None):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'HOST': '/cloudsql/salahtimes-265217:asia-south1:salahtimes',
+            'USER': 'aamer',
+            'PASSWORD': 'Aamer@Salahtimes#',
+            'NAME': 'salahtimes_db',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'HOST': '127.0.0.1',
+            'PORT': '3306',
+            'NAME': 'salahtimes_db',
+            'USER': 'aamer',
+            'PASSWORD': 'Aamer@Salahtimes#',
+        }
+    }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': 'db.sqlite3',
+#     }
+# }
 
 if DEBUG:
 

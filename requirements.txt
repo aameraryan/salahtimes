@@ -3,3 +3,4 @@ pillow
 django-crispy-forms
 django-widget-tweaks
 pymysql
+django-import-export

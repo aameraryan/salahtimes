@@ -125,6 +125,7 @@ def validate_times(instance, sender, *args, **kwargs):
             setattr(instance, namaz, new_time)
             is_changed = True
     if is_changed:
+        print(instance.name)
         instance.save()
 
 

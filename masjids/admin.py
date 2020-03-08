@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Masjid, MasjidStaff
+from import_export.admin import ImportExportModelAdmin
 
 
 class MasjidStaffInline(admin.TabularInline):
@@ -7,9 +8,10 @@ class MasjidStaffInline(admin.TabularInline):
     extra = 0
 
 
-class MasjidAdmin(admin.ModelAdmin):
+class MasjidAdmin(ImportExportModelAdmin):
     list_display = ("name", "get_last_updated_text_admin", "get_staff_count", "fajar", "zuhar", "asar", "maghrib", "isha", "juma")
     inlines = [MasjidStaffInline, ]
+    actions = ['export']
 
 
 admin.site.register(Masjid, MasjidAdmin)
