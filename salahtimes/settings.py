@@ -93,34 +93,40 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 SECURE_SSL_REDIRECT = False
 DEBUG = True
 
-import pymysql  # noqa: 402
-pymysql.install_as_MySQLdb()
+# import pymysql  # noqa: 402
+# pymysql.install_as_MySQLdb()
+#
+# if os.getenv('GAE_APPLICATION', None):
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.mysql',
+#             'HOST': '/cloudsql/salahtimes-265217:asia-south1:salahtimes-v3',
+#             'USER': 'aamer',
+#             'PASSWORD': 'Aamer@Salahtimes#',
+#             'NAME': 'salahtimes_db',
+#         }
+#     }
+# else:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.mysql',
+#             'HOST': '127.0.0.1',
+#             'PORT': '3306',
+#             'NAME': 'salahtimes_db',
+#             'USER': 'aamer',
+#             'PASSWORD': 'Aamer@Salahtimes#',
+#         }
+#     }
 
-if os.getenv('GAE_APPLICATION', None):
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'HOST': '/cloudsql/salahtimes-265217:asia-south1:salahtimes-v3',
-            'USER': 'aamer',
-            'PASSWORD': 'Aamer@Salahtimes#',
-            'NAME': 'salahtimes_db',
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'db.sqlite3',
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'HOST': '127.0.0.1',
-            'PORT': '3306',
-            'NAME': 'salahtimes_db',
-            'USER': 'aamer',
-            'PASSWORD': 'Aamer@Salahtimes#',
-        }
-    }
-
-
+}
 
 if DEBUG:
+
     STATICFILES_DIRS = (
         os.path.join(BASE_DIR, "static"),
     )

@@ -44,7 +44,6 @@ class MasjidUpdateView(UpdateView):
     slug_url_kwarg = "id"
 
     def form_valid(self, form):
-        print(form.cleaned_data)
         staff_phone = form.cleaned_data['your_contact']
         masjid = super().get_object()
         try:
