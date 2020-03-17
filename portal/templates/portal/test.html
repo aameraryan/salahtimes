@@ -1,96 +1,144 @@
 {% extends "portal/base.html" %}
-{% block full_title %}All Areas{% endblock %}
+{% block full_title %}Salah Times{% endblock %}
 
 {% block custom_links %}
 
     <link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/rowreorder/1.2.6/css/rowReorder.dataTables.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
 
+{% endblock %}
+{% block custom_head %}
+    <style>
+        .dropdown-toggle{
+            box-shadow: none!important;
+        }
+
+    </style>
 {% endblock %}
 
 {% block content %}
-
     <section class="content">
-            <div class="row clearfix">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-{#                    <div class="card">#}
-{#                        <div class="header">#}
 
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <select id="sort_by_namaz" class="form-control show-tick">
-                                        <option value="">Sort by Namaz</option>
-                                            <option value="1">Fajar</option>
-                                            <option value="2">Zuhar</option>
-                                            <option value="3">Asar</option>
-                                            <option value="4">Maghrib</option>
-                                            <option value="5">Isha</option>
-                                            <option value="6">Juma</option>
-                                    </select>
-                                </div>
-                                <div class="col-sm-6">
-                                    <select id="sort_order" class="form-control show-tick">
-                                        <option value="asc">Earliest</option>
-                                        <option value="desc">Last</option>
-                                    </select>
-                                </div>
-                            </div>
+        <marquee class="text-success" scrollamount="5">Version 3.0 | Now you can sort masjid names according to namaz times ( earliest or last ).</marquee>
 
-{#                        </div>#}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
 
-
-                        <div class="body">
-                                <table id="namaz_table" style="width: 100%" class="table display nowrap table-bordered table-striped table-hover js-basic-example dataTable">
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Fajar</th>
-                                            <th>Zuhar</th>
-                                            <th>Asar</th>
-                                            <th>Maghrib</th>
-                                            <th>Isha</th>
-                                            <th>Juma</th>
-                                            <th>Address</th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Fajar</th>
-                                            <th>Zuhar</th>
-                                            <th>Asar</th>
-                                            <th>Maghrib</th>
-                                            <th>Isha</th>
-                                            <th>Juma</th>
-                                            <th>Address</th>
-                                        </tr>
-                                    </tfoot>
-                                    </tfoot>
-                                    <tbody>
-                {% for masjid in masajid %}
-                    <tr>
-                        <td>{{ masjid.name }}</td>
-                        <td>{{ masjid.fajar }}</td>
-                        <td>{{ masjid.zuhar }}</td>
-                        <td>{{ masjid.asar }}</td>
-                        <td>{{ masjid.maghrib }}</td>
-                        <td>{{ masjid.isha }}</td>
-                        <td>{{ masjid.juma }}</td>
-                        <td>{{ masjid.address }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-                                </table>
-                        </div>
-{#                    </div>#}
+        <div class="container-fluidl">
+            <div class="block-header" style="margin-left: 0">
+                <h2><b>Showing <span id="masajid_count">{{ masajid.count }}</span> Masajid</b></h2>
+            </div>
+            <div style="background-color: white;padding: 15px 20px 10px 20px;">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="material-icons amt_icon amt_icon_success">search</i>
+                    </span>
+                    <div class="form-line">
+                        <input type="text" id="query" class="form-control input-field" placeholder="search by name or address">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-xs-6 col-md-6 col-lg-6">
+                        <select id="sort_by_namaz" class="form-control show-tick z-depth-0" style="color: green!important;">
+                                <option value="1">Fajar</option>
+                                <option value="2">Zuhar</option>
+                                <option value="3">Asar</option>
+                                <option value="4">Maghrib</option>
+                                <option value="5">Isha</option>
+                                <option value="6">Juma</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-6 col-xs-6 col-md-6 col-lg-6">
+                        <select id="sort_order" class="form-control show-tick">
+                            <option value="asc">Earliest</option>
+                            <option value="desc">Last</option>
+                        </select>
+                    </div>
                 </div>
             </div>
+            <br>
+
+            <br>
+            <a href="{% url "masjids:create" %}">
+                <button type="button" class="btn btn-success waves-effect">
+                    <i class="material-icons">add</i>
+                    <span>ADD NEW MASJID</span>
+                </button>
+            </a>            <br><br>
+            <div class="clearfix"></div>
+            <!-- Basic Example -->
+            <div class="row clearfix container-fluid main_table">
+{#            <div style="background-color: #4caf50;padding: 10px">#}
+                <h4 id="loading_text" style="display: none">Loading ...</h4>
+                <table id="namaz_table" style="width: 100%;background-color: white" class="table display nowrap table-bordered table-stridped table-hover">
+                    <thead>
+                        <tr>
+                            <th class="all" >Name</th>
+                            <th class="all">Fajar</th>
+                            <th class="none">Zuhar</th>
+                            <th class="none">Asar</th>
+                            <th class="none">Maghrib</th>
+                            <th class="none">Isha</th>
+                            <th class="none">Juma</th>
+                            <th class="none">Address</th>
+                            <th class="none">Last Updated</th>
+                            <th class="none">Change</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th class="all">Name</th>
+                            <th class="none">Fajar</th>
+                            <th class="none">Zuhar</th>
+                            <th class="none">Asar</th>
+                            <th class="none">Maghrib</th>
+                            <th class="none">Isha</th>
+                            <th class="none">Juma</th>
+                            <th class="none">Address</th>
+                            <th class="none">Last Updated</th>
+                            <th class="none">Change</th>
+                        </tr>
+                    </tfoot>
+                    </tfoot>
+                    <tbody>
+                        {% for masjid in masajid %}
+                            <tr>
+                                <td>{{ masjid.name }}</td>
+                                <td>{{ masjid.fajar|date:"g:i A" }}</td>
+                                <td>{{ masjid.zuhar|date:"g:i A" }}</td>
+                                <td>{{ masjid.asar|date:"g:i A" }}</td>
+                                <td>{{ masjid.maghrib|date:"g:i A" }}</td>
+                                <td>{{ masjid.isha|date:"g:i A" }}</td>
+                                <td>{{ masjid.juma|date:"g:i A" }}</td>
+                                <td>{{ masjid.address }}</td>
+                                <td>{{ masjid.get_last_updated_text }}</td>
+                                <td>
+                                    <a href="{{ masjid.get_update_url }}">
+                                        <button type="button" class="btn btn-success waves-effect btn-sm">
+                                            <i class="material-icons">edit</i>
+                                            <span>change</span>
+                                        </button>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+{#            </div>#}
+            </div>
+            <!-- #END# Basic Example -->
+        </div>
     </section>
-
 {% endblock %}
-
 
 {% block custom_script %}
 
@@ -101,14 +149,12 @@
 
     <script>
         $(document).ready(function() {
-            let table = $('#namaz_table').DataTable( {
-                responsive: true,
-                paging: false,
-                searching: false,
-                columnDefs: [
-                    { responsivePriority: 1, targets: 0 },
-                    { responsivePriority: 2, targets: 1 }
-                ]
+            let pre_loader = $('.page-loader-wrapper');
+
+
+            $('#query').on( 'keyup', function () {
+                table.search( this.value ).draw();
+                $("#masajid_count").text(table.page.info().recordsDisplay);
             } );
 
             function sort_table(){
@@ -118,21 +164,32 @@
                     responsive: true,
                     destroy: true,
                     paging: false,
-                    searching: false,
+                    {#searching: false,#}
                     order: [sort_col, sort_order],
                     columnDefs: [
                         { responsivePriority: 1, targets: 0 },
-                        { responsivePriority: 2, targets: sort_col },
+                        { responsivePriority: 1, targets: sort_col },
                         { responsivePriority: 10001, targets: 1 },
                         { responsivePriority: 10001, targets: 2 },
                         { responsivePriority: 10001, targets: 3 },
-                    ]
+                        { responsivePriority: 10001, targets: 4 },
+                        { responsivePriority: 10001, targets: 5 },
+                        { responsivePriority: 10001, targets: 6 },
+                        { responsivePriority: 10001, targets: 7 },
+                        { responsivePriority: 10001, targets: 8 },
+                        { responsivePriority: 10001, targets: 9 },
+                    ],
                 });
+                $("#namaz_table_filter").hide();
             }
             $("#sort_by_namaz, #sort_order").on("change", function () {
-                sort_table();
-            })
+                if ($("#sort_by_namaz").val() !== "") {
+                    $('#loading_text').show();
+                    sort_table();
+                    $('#loading_text').hide();
+                }
+            });
+            sort_table();
         } );
     </script>
 {% endblock %}
-

@@ -11,6 +11,22 @@ from django.utils import timezone
 from localities.models import Area
 
 
+def breakit(name, break_index):
+    name = name.replace("  ", " ")
+    tl = []
+    while len(name) > 0:
+        if len(name) > break_index:
+            space_index = name.rfind(" ", 0, break_index)
+            if space_index == -1:
+                space_index = break_index
+            tl.append(name[:space_index])
+            name = name[space_index:]
+        else:
+            tl.append(name)
+            name = ""
+    return tl
+
+
 class Masjid(models.Model):
 
     area = models.ForeignKey(Area, on_delete=models.PROTECT)
@@ -42,6 +58,10 @@ class Masjid(models.Model):
     @property
     def get_update_url(self):
         return reverse_lazy("masjids:update", kwargs={"id": self.id})
+
+    @property
+    def get_name_display(self):
+        return breakit(self.name, 25)
 
     @property
     def get_admins_text(self):

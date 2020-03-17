@@ -81,37 +81,41 @@
                 <table id="namaz_table" style="width: 100%;background-color: white" class="table display nowrap table-bordered table-stridped table-hover">
                     <thead>
                         <tr>
-                            <th class="all" >Name</th>
-                            <th class="all">Fajar</th>
-                            <th class="none">Zuhar</th>
-                            <th class="none">Asar</th>
-                            <th class="none">Maghrib</th>
-                            <th class="none">Isha</th>
-                            <th class="none">Juma</th>
-                            <th class="none">Address</th>
-                            <th class="none">Last Updated</th>
-                            <th class="none">Change</th>
+                            <th>Name</th>
+                            <th>Fajar</th>
+                            <th>Zuhar</th>
+                            <th>Asar</th>
+                            <th>Maghrib</th>
+                            <th>Isha</th>
+                            <th>Juma</th>
+                            <th>Address</th>
+                            <th>Last Updated</th>
+                            <th>Change</th>
                         </tr>
                     </thead>
                     <tfoot>
                         <tr>
-                            <th class="all">Name</th>
-                            <th class="none">Fajar</th>
-                            <th class="none">Zuhar</th>
-                            <th class="none">Asar</th>
-                            <th class="none">Maghrib</th>
-                            <th class="none">Isha</th>
-                            <th class="none">Juma</th>
-                            <th class="none">Address</th>
-                            <th class="none">Last Updated</th>
-                            <th class="none">Change</th>
+                            <th>Name</th>
+                            <th>Fajar</th>
+                            <th>Zuhar</th>
+                            <th>Asar</th>
+                            <th>Maghrib</th>
+                            <th>Isha</th>
+                            <th>Juma</th>
+                            <th>Address</th>
+                            <th>Last Updated</th>
+                            <th>Change</th>
                         </tr>
                     </tfoot>
                     </tfoot>
                     <tbody>
                         {% for masjid in masajid %}
                             <tr>
-                                <td>{{ masjid.name }}</td>
+                                <td>
+                                    {% for line in masjid.get_name_display %}
+                                        {{ line }}<br>
+                                    {% endfor %}
+                                </td>
                                 <td>{{ masjid.fajar|date:"g:i A" }}</td>
                                 <td>{{ masjid.zuhar|date:"g:i A" }}</td>
                                 <td>{{ masjid.asar|date:"g:i A" }}</td>
@@ -164,7 +168,6 @@
                     responsive: true,
                     destroy: true,
                     paging: false,
-                    {#searching: false,#}
                     order: [sort_col, sort_order],
                     columnDefs: [
                         { responsivePriority: 1, targets: 0 },
@@ -184,9 +187,9 @@
             }
             $("#sort_by_namaz, #sort_order").on("change", function () {
                 if ($("#sort_by_namaz").val() !== "") {
-                    $('#loading_text').show();
-                    sort_table();
-                    $('#loading_text').hide();
+                    $('#loading_text').show().then(sort_table);
+                    {#sort_table();#}
+                    {#$('#loading_text').hide();#}
                 }
             });
             sort_table();
