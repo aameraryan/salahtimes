@@ -1,0 +1,92 @@
+
+
+{% extends "portal/base.html" %}
+{% block full_title %}{{ raw_search_query }} - search Salah Times{% endblock %}
+
+{% block content %}
+
+
+    <section class="content">
+        <div class="container-fluid main_container">
+            <div class="block-header">
+                <h2>showing <b>{{ masajid.count }}</b> results for <b>"{{ search_query }}"</b></h2>
+                <a href="{% url "portal:home" %}"><u>Go Back</u></a>
+            </div>
+
+            <div style="background-color: white;padding: 15px 20px 5px 20px;">
+                <div class="input-group">
+                    <div class="form-line">
+                        <form name="searchForm" method="get" action="{% url "portal:search" %}">
+                            <input type="text" name="query" class="form-control" placeholder="search by name or address">
+                        </form>
+                    </div>
+                    <span class="input-group-addon">
+                        <a onclick="searchForm.submit();" href="#"><i class="material-icons">send</i></a>
+                    </span>
+                </div>
+            </div>
+            <br>
+            <div class="clearfix"></div>
+            <!-- Basic Example -->
+            <div class="row clearfix">
+                {% if masajid %}
+                    <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
+                    {% for masjid in masajid %}
+
+                        <div class="panel randomColor">
+                                            <div class="panel-heading" role="tab" id="masjidHeading_{{ forloop.counter }}">
+                                                <h4 class="panel-title">
+                                                    <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#masjid_{{ forloop.counter }}" aria-expanded="false" aria-controls="masjid_{{ forloop.counter }}">
+                                                    {{ masjid.name }}<br><small style="height: 20px;color: whitesmoke">{{ masjid.get_address_display }}</small>
+                                                    </a>
+                                                </h4>
+
+                                            </div>
+                                            <div style="padding: 10px!important;" id="masjid_{{ forloop.counter }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="masjidHeading_{{ forloop.counter }}">
+                                                <table class="table timing_table">
+                                                        <tr>
+                                                            <th>Fajar</th>
+                                                            <td>{{ masjid.fajar|date:"g:i A" }}</td>
+                                                            <th>Zuhar</th>
+                                                            <td>{{ masjid.zuhar|date:"g:i A" }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Asar</th>
+                                                            <td>{{ masjid.asar|date:"g:i A" }}</td>
+                                                            <th>Maghrib</th>
+                                                            <td>{{ masjid.maghrib|date:"g:i A" }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Isha</th>
+                                                            <td>{{ masjid.isha|date:"g:i A" }}</td>
+                                                            <th>Juma</th>
+                                                            <td>{{ masjid.juma|date:"g:i A" }}</td>
+                                                        </tr>
+                                                    </table>
+                                                <br>
+                                                <span>Times has changed ?
+                                                    <a href="{% url "suggestions:time_suggestion_add" %}"><u>Suggest new times</u></a>
+                                                </span>
+
+                                            </div>
+                                        </div>
+
+                    {% endfor %}
+
+                </div>
+                {% else %}
+                    <div class="container">
+                        <h4 style="color: grey">Cant find masjid for query "{{ search_query }}"
+                            <a href="{% url "masjids:create" %}"><u>Add new masjid entry</u></a>
+                        </h4>
+                    </div>
+                {% endif %}
+            </div>
+            <!-- #END# Basic Example -->
+        </div>
+    </section>
+
+
+{% endblock %}
+
+

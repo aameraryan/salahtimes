@@ -1,0 +1,139 @@
+{% extends "portal/base.html" %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block title %}Change Times | {{ form.instance.name }}{% endblock %}
+
+{% block custom_links %}
+    <link href="{% static "plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" %}" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+
+    <section class="content">
+        <div>
+            <div class="card" style="padding: 0!important;">
+                <div class="header">
+                    <h2 style="color: green!important;font-size: 15px"><i class="material-icons" style="font-size: 16px;margin-top: 4px">edit</i> <b> CHANGE TIMES | {{ form.instance.name }}</b></h2>
+                </div>
+                <div class="body bg-success" style="padding: 20px 0!important;">
+                    <div class="container-fluid">
+                        <form method="post">
+                            {% csrf_token %}
+
+                            {{ form.your_contact|as_crispy_field }}
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    {{ form.name|attr:"placeholder:Enter Masjid Name"|as_crispy_field }}
+                                </div>
+                                <div class="col-lg-6">
+                                    {{ form.area|as_crispy_field }}
+                                </div>
+                            </div>
+
+{#                            {{ form.address|attr:"placeholder:Enter masjid address (optional)"|attr:"rows: 4"|as_crispy_field }}#}
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    {{ form.fajar|attr:"id:fajar"|as_crispy_field }}
+                                </div>
+                                <div class="col-lg-6">
+                                    {{ form.zuhar|attr:"id:zuhar"|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    {{ form.asar|attr:"id:asar"|as_crispy_field }}
+                                </div>
+                                <div class="col-lg-6">
+                                    {{ form.maghrib|attr:"id:maghrib"|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    {{ form.isha|attr:"id:isha"|as_crispy_field }}
+                                </div>
+                                <div class="col-lg-6">
+                                    {{ form.juma|attr:"id:juma"|as_crispy_field }}
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-success waves-effect btn-lg">CHANGE TIMES</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        <br><br><br>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block custom_script %}
+    <script src="{% static "plugins/autosize/autosize.js" %}"></script>
+    <script src="{% static "plugins/momentjs/moment.js" %}"></script>
+    <script src="{% static "plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js" %}"></script>
+{#    <script src="{% static "js/pages/forms/basic-form-elements.js" %}"></script>#}
+
+
+    <script>
+
+        $("#fajar").val("{{ form.instance.fajar|date:"h:i "}}AM");
+        $("#zuhar").val("{{ form.instance.zuhar|date:"h:i "}}PM");
+        $("#asar").val("{{ form.instance.asar|date:"h:i "}}PM");
+        $("#maghrib").val("{{ form.instance.maghrib|date:"h:i "}}PM");
+        $("#isha").val("{{ form.instance.isha|date:"h:i "}}PM");
+        $("#juma").val("{{ form.instance.juma|date:"h:i "}}PM");
+
+        $(function () {
+
+            $('#fajar').bootstrapMaterialDatePicker({
+                format: 'hh:mm A',
+                shortTime: true,
+                clearButton: true,
+                date: false,
+                currentDate: "{{ form.instance.fajar|date:'h:i '}}AM",
+            });
+            $('#zuhar').bootstrapMaterialDatePicker({
+                format: 'hh:mm A',
+                shortTime: true,
+                clearButton: true,
+                date: false,
+                currentDate: "{{ form.instance.zuhar|date:"h:i " }}PM",
+            });
+            $('#asar').bootstrapMaterialDatePicker({
+                format: 'hh:mm A',
+                shortTime: true,
+                clearButton: true,
+                date: false,
+                currentDate: "{{ form.instance.asar|date:"h:i " }}PM",
+            });
+            $('#maghrib').bootstrapMaterialDatePicker({
+                format: 'hh:mm A',
+                shortTime: true,
+                clearButton: true,
+                date: false,
+                currentDate: "{{ form.instance.maghrib|date:'h:i '}}PM",
+            });
+            $('#isha').bootstrapMaterialDatePicker({
+                format: 'hh:mm A',
+                shortTime: true,
+                clearButton: true,
+                date: false,
+                currentDate: "{{ form.instance.isha|date:"h:i " }}PM",
+            });
+            $('#juma').bootstrapMaterialDatePicker({
+                format: 'hh:mm A',
+                shortTime: true,
+                clearButton: true,
+                date: false,
+                currentDate: "{{ form.instance.juma|date:"h:i " }}PM",
+            });
+
+        })
+    </script>
+
+
+{% endblock %}
+

@@ -1,0 +1,127 @@
+{% extends "portal/base.html" %}
+{% block full_title %}Salah Times{% endblock %}
+{% block content %}
+    <section class="content">
+
+        <marquee class="text-warning font-weight-normal" scrollamount="3">This website was not upto-date since March 2020 due to Covid-19 lockdown, hence you may find old timings for some masajid. If you know the original timings of any masjid them please give your support and update times here. Thank you!</marquee>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="container-fluidl">
+            <div class="block-header" style="margin-left: 0">
+                <h2><b>Showing <span id="masajid_count">{{ masajid.count }}</span> Masajid</b></h2>
+            </div>
+            <div style="background-color: white;padding: 15px 20px 5px 20px;">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="material-icons amt_icon">search</i>
+                    </span>
+                    <div class="form-line">
+                        <input type="text" id="query" class="form-control" placeholder="search by name or address">
+                    </div>
+                </div>
+            </div>
+            <br>
+            <a href="{% url "masjids:create" %}">
+                <button type="button" class="btn btn-success waves-effect">
+                    <i class="material-icons">add</i>
+                    <span>ADD NEW MASJID</span>
+                </button>
+            </a>            <br><br>
+            <div class="clearfix"></div>
+            <!-- Basic Example -->
+            <div class="row clearfix container-fluid">
+                <div class="panel-group" id="accordion_1" role="tablist" aria-multiselectable="true">
+                    {% for masjid in masajid %}
+
+                        <div class="panel masjid randomColor">
+                                    <span class="masjid_text" style="display: none">
+                                        {{ masjid.name }} {{ masjid.get_address_display }}
+                                    </span>
+                                            <div class="panel-heading" role="tab" id="masjidHeading_{{ forloop.counter }}">
+                                                <h4 class="panel-title ">
+
+                                                    <a role="button" data-toggle="collapse" data-parent="#accordion_1" href="#masjid_{{ forloop.counter }}" aria-expanded="false" aria-controls="masjid_{{ forloop.counter }}">
+                                                    {{ masjid.name }}<br><small style="height: 20px;color: whitesmoke;">{{ masjid.get_address_display }}</small>
+                                                    </a>
+                                                </h4>
+
+                                            </div>
+                                            <div style="padding: 10px!important;" id="masjid_{{ forloop.counter }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="masjidHeading_{{ forloop.counter }}">
+                                                <table class="table timing_table">
+                                                        <tr>
+                                                            <th>Fajar</th>
+                                                            <td>{{ masjid.fajar|date:"g:i " }}AM</td>
+                                                            <th>Zuhar</th>
+                                                            <td>{{ masjid.zuhar|date:"g:i " }}PM</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Asar</th>
+                                                            <td>{{ masjid.asar|date:"g:i " }}PM</td>
+                                                            <th>Maghrib</th>
+                                                            <td>{{ masjid.maghrib|date:"g:i " }}PM</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Isha</th>
+                                                            <td>{{ masjid.isha|date:"g:i " }}PM</td>
+                                                            <th>Juma</th>
+                                                            <td>{{ masjid.juma|date:"g:i " }}PM</td>
+                                                        </tr>
+                                                    </table>
+                                                <br>
+                                                <span>Times has changed ?
+                                                    <a href="{{ masjid.get_update_url }}">
+                                                        <button type="button" class="btn btn-small btn-success waves-effect">
+                                                            <i class="material-icons">edit</i>
+                                                            <span>CHANGE TIMES</span>
+                                                        </button>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                    {% endfor %}
+                </div>
+
+                <div id="not_found_div" class="container" style="display: none">
+                    <h4 style="color: grey">Cant find masjid for query "<span id="search_query"></span>"
+                            <a href="{% url "masjids:create" %}"><u>Add new masjid entry</u></a>
+                    </h4>
+                </div>
+            </div>
+            <!-- #END# Basic Example -->
+        </div>
+    </section>
+{% endblock %}
+{% block custom_script %}
+    <script>
+        $("#query").on("keyup", function () {
+            let query_text = $(this).val().toLowerCase();
+            let masajid = 0;
+            $(".masjid").each(function () {
+                if ($(this).children(".masjid_text").text().toLowerCase().includes(query_text)){
+                    $(this).show();
+                    masajid += 1;
+                }
+                else{
+                    $(this).hide();
+                }
+            });
+            $("#masajid_count").text(masajid);
+            if (masajid < 1){
+                $("#not_found_div").show();
+                $("#search_query").text(query_text);
+            }
+            else{
+                $("#not_found_div").hide();
+            }
+        });
+    </script>
+{% endblock %}

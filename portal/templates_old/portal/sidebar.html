@@ -1,0 +1,40 @@
+    {% load static %}
+    <section>
+        <aside id="leftsidebar" class="sidebar">
+            <!-- User Info -->
+            <div class="user-info">
+
+            </div>
+            <!-- #User Info -->
+            <!-- Menu -->
+            <div class="menu">
+                <ul class="list">
+                    <li class="header">MAIN NAVIGATION</li>
+                    <li class="amt-nav-itm">
+                        <a href="/">
+                            <i class="material-icons">home</i>
+                            <span>All Masajid</span>
+                        </a>
+                    </li>
+                    <li class="amt-nav-itm">
+                        <a href="{% url "portal:areas" %}">
+                            <i class="material-icons">place</i>
+                            <span>Areas</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- #Menu -->
+            <!-- Footer -->
+            <div class="legal">
+                <div class="copyright">
+                    &copy; 2020 <a href="javascript:void(0);">Salah Times - All rights reserved</a>.<br>
+                    Powered by <b>kondhwa.info</b>
+                </div>
+                <div class="version">
+                    <b>Version: </b> 2.0
+                </div>
+            </div>
+            <!-- #Footer -->
+        </aside>
+    </section>

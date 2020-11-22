@@ -8,6 +8,8 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="theme-color" content="#4CAF50"/>
     <title>Salah Times</title>
+    <link rel="manifest" href="{% static "js/manifest.json" %}">
+
     <!-- Favicon-->
     <link rel="icon" href="{% static "images/m.ico" %}" type="image/x-icon">
 
@@ -118,6 +120,18 @@
                 $(this).addClass("panel-col-light-green");
             }
         })
+
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  // Prevent the mini-infobar from appearing on mobile
+  e.preventDefault();
+  // Stash the event so it can be triggered later.
+  deferredPrompt = e;
+  // Update UI notify the user they can install the PWA
+  showInstallPromotion();
+});
+
     </script>
 
     {% block custom_script %}

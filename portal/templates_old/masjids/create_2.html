@@ -1,0 +1,126 @@
+{% extends "portal/base.html" %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block title %}Add New Masjid{% endblock %}
+
+{% block custom_links %}
+    <link href="{% static "plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" %}" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+
+
+    <section class="content">
+        <div>
+            <div class="block-header">
+                <h2 style="color: green!important;font-size: 15px"><i class="material-icons" style="font-size: 15px">plus</i> <b>ADD NEW MASJID ENTRY</b></h2>
+
+            </div>
+            <div class="clearfix"></div>
+
+            <div class="row clearfix container-fluid">
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            {{ form.name|attr:"placeholder:  Enter Masjid Name"|as_crispy_field }}
+                        </div>
+                        <div class="col-lg-6">
+                            {{ form.area|as_crispy_field }}
+                        </div>
+                    </div>
+
+                    {{ form.address|attr:"placeholder:  Enter masjid address (optional)"|attr:"rows: 4"|as_crispy_field }}
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            {{ form.fajar|attr:"id:fajar"|add_class:"timepicker"|as_crispy_field }}
+                        </div>
+                        <div class="col-lg-6">
+                            {{ form.zuhar|attr:"id:zuhar"|add_class:"timepicker"|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            {{ form.asar|attr:"id:asar"|add_class:"timepicker"|as_crispy_field }}
+                        </div>
+                        <div class="col-lg-6">
+                            {{ form.maghrib|attr:"id:maghrib"|add_class:"timepicker"|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            {{ form.isha|attr:"id:isha"|add_class:"timepicker"|as_crispy_field }}
+                        </div>
+                        <div class="col-lg-6">
+                            {{ form.juma|attr:"id:juma"|add_class:"timepicker"|as_crispy_field }}
+                        </div>
+                    </div>
+                    <button type="submit" class="btn bg-green">ADD ENTRY</button>
+                </form>
+            </div>
+        <br><br><br>
+
+        </div>
+    </section>
+
+
+{% endblock %}
+
+{% block custom_script %}
+
+    <script>
+        $(function () {
+            $('#fajar').bootstrapMaterialDatePicker({
+                format: 'HH:mm A',
+                shortTime: true,
+                clearButton: true,
+                date: false,
+                currentDate: "01:20 AM",
+            });
+            $('#zuhar').bootstrapMaterialDatePicker({
+                format: 'HH:mm A',
+                shortTime: true,
+                clearButton: true,
+                date: false,
+                currentDate: "01:20 AM",
+            });
+            $('#asar').bootstrapMaterialDatePicker({
+                format: 'HH:mm A',
+                shortTime: true,
+                clearButton: true,
+                date: false,
+                currentDate: "01:20 AM",
+            });
+            $('#maghrib').bootstrapMaterialDatePicker({
+                format: 'HH:mm A',
+                shortTime: true,
+                clearButton: true,
+                date: false,
+                currentDate: "01:20 AM",
+            });
+            $('#isha').bootstrapMaterialDatePicker({
+                format: 'HH:mm A',
+                shortTime: true,
+                clearButton: true,
+                date: false,
+                currentDate: "01:20 AM",
+            });
+            $('#juma').bootstrapMaterialDatePicker({
+                format: 'HH:mm A',
+                shortTime: true,
+                clearButton: true,
+                date: false,
+                currentDate: "01:20 AM",
+            });
+        })
+    </script>
+
+    <script src="{% static "plugins/autosize/autosize.js" %}"></script>
+    <script src="{% static "plugins/momentjs/moment.js" %}"></script>
+    <script src="{% static "plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js" %}"></script>
+    <script src="{% static "js/pages/forms/basic-form-elements.js" %}"></script>
+{% endblock %}

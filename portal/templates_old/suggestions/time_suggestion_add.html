@@ -1,0 +1,130 @@
+{% extends "portal/base.html" %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block title %}Suggest New Times{% endblock %}
+
+{% block custom_links %}
+    <link href="{% static "plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" %}" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+
+
+    <section class="content">
+        <div>
+            <div class="card" style="padding: 0!important;">
+                <div class="header">
+                    <h2 style="color: green!important;font-size: 15px"><i class="material-icons" style="font-size: 15px">pan_tool</i> <b> SUGGEST NEW TIMINGS FOR "{{ masjid.name|upper }}"</b></h2>
+                </div>
+                <div class="body bg-success" style="padding: 20px 0!important;">
+                    <div class="container-fluid">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.masjid|as_crispy_field }}
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            {{ form.fajar|attr:"id:fajar"|as_crispy_field }}
+                        </div>
+                        <div class="col-lg-6">
+                            {{ form.zuhar|attr:"id:zuhar"|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            {{ form.asar|attr:"id:asar"|as_crispy_field }}
+                        </div>
+                        <div class="col-lg-6">
+                            {{ form.maghrib|attr:"id:maghrib"|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            {{ form.isha|attr:"id:isha"|as_crispy_field }}
+                        </div>
+                        <div class="col-lg-6">
+                            {{ form.juma|attr:"id:juma"|as_crispy_field }}
+                        </div>
+                    </div>
+                    <button type="submit" class="btn bg-green">ADD SUGGESTION</button>
+                </form>
+            </div>
+                </div>
+            </div>
+        <br><br><br>
+        </div>
+    </section>
+
+
+{% endblock %}
+
+{% block custom_script %}
+    <script src="{% static "plugins/autosize/autosize.js" %}"></script>
+    <script src="{% static "plugins/momentjs/moment.js" %}"></script>
+    <script src="{% static "plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js" %}"></script>
+{#    <script src="{% static "js/pages/forms/basic-form-elements.js" %}"></script>#}
+
+    <script>
+        $(function () {
+            $('#fajar').bootstrapMaterialDatePicker({
+                format: 'hh:mm A',
+                shortTime: true,
+                clearButton: true,
+                date: false,
+                currentDate: "{{ masjid.fajar|date:'h:i A'}}",
+            });
+            $('#zuhar').bootstrapMaterialDatePicker({
+                format: 'hh:mm A',
+                shortTime: true,
+                clearButton: true,
+                date: false,
+                currentDate: "{{ masjid.zuhar|date:'h:i A'}}",
+            });
+            $('#asar').bootstrapMaterialDatePicker({
+                format: 'hh:mm A',
+                shortTime: true,
+                clearButton: true,
+                date: false,
+                currentDate: "{{ masjid.asar|date:'h:i A'}}",
+            });
+            $('#maghrib').bootstrapMaterialDatePicker({
+                format: 'hh:mm A',
+                shortTime: true,
+                clearButton: true,
+                date: false,
+                currentDate: "{{ masjid.maghrib|date:'h:i A'}}",
+            });
+            $('#isha').bootstrapMaterialDatePicker({
+                format: 'hh:mm A',
+                shortTime: true,
+                clearButton: true,
+                date: false,
+                currentDate: "{{ masjid.isha|date:'h:i A'}}",
+            });
+            $('#juma').bootstrapMaterialDatePicker({
+                format: 'hh:mm A',
+                shortTime: true,
+                clearButton: true,
+                date: false,
+                currentDate: "{{ masjid.juma|date:'h:i A'}}",
+            });
+        })
+    </script>
+    <script>
+        $(function () {
+            let url = new URL(window.location.href);
+            let masjid_id = url.searchParams.get("msid");
+            if (masjid_id){
+                $("#id_masjid").find("option").each(function () {
+                    if ($(this).val() === masjid_id){
+                        $("#id_masjid").val(masjid_id);
+                    }
+                })
+            }
+        })
+    </script>
+
+
+{% endblock %}

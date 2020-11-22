@@ -1,0 +1,78 @@
+{% extends "portal/base.html" %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block title %}Add New Masjid{% endblock %}
+
+{% block custom_links %}
+    <link href="{% static "plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" %}" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+
+    <section class="content">
+        <div>
+            <div class="card" style="padding: 0!important;">
+                <div class="header">
+                    <h2 style="color: green!important;font-size: 15px"><i class="material-icons" style="font-size: 16px;margin-top: 4px">add</i> <b> ADD NEW MASJID ENTRY</b></h2>
+                </div>
+                <div class="body bg-success" style="padding: 20px 0!important;">
+                    <div class="container-fluid">
+                        <form method="post">
+                            {% csrf_token %}
+
+                            {{ form.your_contact|as_crispy_field }}
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    {{ form.name|attr:"placeholder:Enter Masjid Name"|as_crispy_field }}
+                                </div>
+                                <div class="col-lg-6">
+                                    {{ form.area|as_crispy_field }}
+                                </div>
+                            </div>
+
+                            {{ form.address|attr:"placeholder:Enter masjid address (optional)"|attr:"rows: 4"|as_crispy_field }}
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    {{ form.fajar|attr:"placeholder:05:00 AM"|add_class:"timepicker"|as_crispy_field }}
+                                </div>
+                                <div class="col-lg-6">
+                                    {{ form.zuhar|attr:"placeholder:01:00 PM"|add_class:"timepicker"|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    {{ form.asar|attr:"placeholder:05:00 PM"|add_class:"timepicker"|as_crispy_field }}
+                                </div>
+                                <div class="col-lg-6">
+                                    {{ form.maghrib|attr:"placeholder:07:00 PM"|add_class:"timepicker"|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    {{ form.isha|attr:"placeholder:09:00 PM"|add_class:"timepicker"|as_crispy_field }}
+                                </div>
+                                <div class="col-lg-6">
+                                    {{ form.juma|attr:"placeholder:01:30 PM"|add_class:"timepicker"|add_class:"timepicker"|as_crispy_field }}
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-success waves-effect btn-lg">ADD ENTRY</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        <br><br><br>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block custom_script %}
+    <script src="{% static "plugins/autosize/autosize.js" %}"></script>
+    <script src="{% static "plugins/momentjs/moment.js" %}"></script>
+    <script src="{% static "plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js" %}"></script>
+    <script src="{% static "js/pages/forms/basic-form-elements.js" %}"></script>
+{% endblock %}
+
