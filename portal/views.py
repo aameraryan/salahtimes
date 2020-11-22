@@ -14,7 +14,7 @@ def test(request):
 
 class HomeView(TemplateView):
 
-    template_name = "portal/home.html"
+    template_name = "portal/home2.html"
 
     def get_context_data(self, **kwargs):
         masajid = Masjid.objects.all().order_by("name")

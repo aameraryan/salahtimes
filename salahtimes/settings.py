@@ -92,7 +92,7 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 
 SECURE_SSL_REDIRECT = False
-DEBUG = True
+DEBUG = False
 
 # import pymysql  # noqa: 402
 # pymysql.install_as_MySQLdb()
